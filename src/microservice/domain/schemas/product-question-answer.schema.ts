@@ -8,6 +8,9 @@ export class ProductQuestionAnswer {
   questionId: string;
 
   @Prop({ required: true })
+  shopId: number;
+
+  @Prop({ required: true })
   questionContent: string;
 
   @Prop({ required: true })

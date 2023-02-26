@@ -15,8 +15,8 @@ export class LoadReviewsService {
     private readonly saveProductService: SaveProductService
   ) {}
 
-  async loadReviews(): Promise<any> {
-    const dadaoData = await this.reviewsDadaoRepository.getAllReviews();
+  async loadReviews(cookie: string): Promise<any> {
+    const dadaoData = await this.reviewsDadaoRepository.getAllReviews(cookie);
     // await this.clearReviews();
     await this.saveReviews(dadaoData.dataList);
     return dadaoData;
@@ -71,6 +71,7 @@ export class LoadReviewsService {
       rev.star = item.star;
       rev.status = item.status;
       rev.productId = productDB.id;
+      rev.shopId = 61312729228;
       await console.log(rev.commentId);
       await this.reviewsMongooseRepository.insertOne(rev, rev.goods_title);
     }

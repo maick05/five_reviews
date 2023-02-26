@@ -23,6 +23,7 @@ export class SaveProductService {
     product.avgStar = dadaoData.avgStar;
     product.handle = dadaoData.handle;
     product.status = dadaoData.goodsStatus;
+    product.shopId = 61312729228;
     await this.mongooseRepository.insertOne(product, product.title);
 
     return product;

@@ -11,8 +11,8 @@ export class LoadProductsQuestionsAnswersService {
     private readonly mongooseRepository: ProductsQuestionsAnswersMongooseRepository,
   ) {}
 
-  async loadPQA(): Promise<any> {
-    const dadaoData = await this.reviewsDadaoRepository.getAllSQA();
+  async loadPQA(cookie: string): Promise<any> {
+    const dadaoData = await this.reviewsDadaoRepository.getAllSQA(cookie);
     await this.savePQAs(dadaoData.dataList);
     return dadaoData;
   }
@@ -40,6 +40,7 @@ export class LoadProductsQuestionsAnswersService {
       pqa.answerContent = item.answerContent;
       pqa.answerTime = item.answerTime;
       pqa.dadaoOrigin = true;
+      pqa.shopId = 61312729228;
 
       await this.mongooseRepository.insertOne(pqa, pqa.questionId.toString());
     }

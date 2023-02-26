@@ -13,6 +13,9 @@ export class Review {
   status: number;
 
   @Prop({ required: true })
+  shopId: number;
+
+  @Prop({ required: true })
   star: number;
 
   @Prop({ required: false })

@@ -10,6 +10,9 @@ export class Product {
   id: number;
 
   @Prop({ required: true })
+  shopId: number;
+
+  @Prop({ required: true })
   title: string;
 
   @Prop({ required: false })

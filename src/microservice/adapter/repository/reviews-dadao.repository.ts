@@ -11,6 +11,8 @@ import { DadaoSQA } from 'src/microservice/domain/responses/get-all-dadao-sqa.re
 
 @Injectable()
 export class ReviewsDadaoRepository extends HttpClientService {
+  private cookie: string;
+
   constructor(
     @Inject(HttpService)
     protected readonly httpService: HttpService
@@ -18,11 +20,14 @@ export class ReviewsDadaoRepository extends HttpClientService {
     super('https://order.sp.dadaowl.com', httpService);
   }
 
-  async getAllReviews(): Promise<DadaoListResponse<DadaoReview[]>> {
+  async getAllReviews(
+    cookie: string
+  ): Promise<DadaoListResponse<DadaoReview[]>> {
+    this.setCookie(cookie);
+
     const result = await this.get(
       '/goods-comment/list?currentPage=1&pageSize=1000'
     );
-    console.log(result);
     return result['data'];
   }
 
@@ -36,7 +41,9 @@ export class ReviewsDadaoRepository extends HttpClientService {
     return result['data'];
   }
 
-  async getAllSQA(): Promise<DadaoListResponse<DadaoSQA[]>> {
+  async getAllSQA(cookie: string): Promise<DadaoListResponse<DadaoSQA[]>> {
+    this.setCookie(cookie);
+
     const result = await this.get(
       '/shop-question-answer/list?currentPage=1&pageSize=1000'
     );
@@ -47,8 +54,11 @@ export class ReviewsDadaoRepository extends HttpClientService {
   protected getHeaders() {
     return {
       ...super.getHeaders(),
-      Cookie:
-        'STORE_SHOP_INFO={%22userId%22:%2261312729228%22%2C%22firstName%22:null%2C%22lastName%22:null%2C%22hasReview%22:true%2C%22insUsername%22:%22%22%2C%22isRelatedIns%22:false%2C%22shopUrl%22:%22https://f6bb5f.myshopify.com%22}; SESSION=NGUyM2I2ZmEtYTE5OC00NjllLTkxMDItN2M4NGJiZGQyYTQ2; crisp-client%2Fsession%2Fce7cf425-0b66-4801-beba-cb5a19592d3e=session_71fa3013-c3ff-47fc-beac-7c6e21e0b975'
+      Cookie: this.cookie
     };
+  }
+
+  setCookie(cookie: string) {
+    this.cookie = cookie;
   }
 }

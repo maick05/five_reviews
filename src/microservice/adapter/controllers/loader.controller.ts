@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Req } from '@nestjs/common';
 import { LoadProductsQuestionsAnswersService } from 'src/microservice/application/services/load-products-questions-answers.service';
 import { GetReviewsService } from '../../application/services/get-reviews.service';
 import { LoadReviewsService } from '../../application/services/load-reviews.service';
@@ -11,12 +11,12 @@ export class LoaderController {
   ) {}
 
   @Get('/load')
-  async loadReviews(): Promise<any> {
-    return await this.loadReviewsService.loadReviews();
+  async loadReviews(@Req() req: Request): Promise<any> {
+    return await this.loadReviewsService.loadReviews(req.headers['cookie']);
   }
 
   @Get('/load/pqa')
-  async loadPQA(): Promise<any> {
-    return await this.loadPQAService.loadPQA();
+  async loadPQA(@Req() req: Request): Promise<any> {
+    return await this.loadPQAService.loadPQA(req.headers['cookie']);
   }
 }
