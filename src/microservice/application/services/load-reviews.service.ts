@@ -17,7 +17,7 @@ export class LoadReviewsService {
 
   async loadReviews(): Promise<any> {
     const dadaoData = await this.reviewsDadaoRepository.getAllReviews();
-    await this.clearReviews();
+    // await this.clearReviews();
     await this.saveReviews(dadaoData.dataList);
     return dadaoData;
   }
@@ -28,6 +28,14 @@ export class LoadReviewsService {
 
   async saveReviews(dadaoData: DadaoReview[]) {
     for await (const item of dadaoData) {
+      const reviewInDB = await this.reviewsMongooseRepository.find({
+        commentId: item.commentId
+      });
+
+      if (reviewInDB.length > 0) {
+        continue;
+      }
+
       const product = await this.searchProduct(item.goods_title);
 
       const rev = new Review();
