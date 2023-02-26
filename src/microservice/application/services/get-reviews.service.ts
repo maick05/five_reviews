@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ReviewProduct, ReviewsProductDTO } from 'src/microservice/domain/dto/reviews-product.dto';
+import {
+  ReviewProduct,
+  ReviewsProductDTO
+} from 'src/microservice/domain/dto/reviews-product.dto';
 import { Review } from 'src/microservice/domain/schemas/review.schema';
 import { ReviewsMongooseRepository } from '../../adapter/repository/reviews-mongoose.repository';
 
@@ -9,19 +12,24 @@ export class GetReviewsService {
     private readonly reviewsMongooseRepository: ReviewsMongooseRepository
   ) {}
 
-  async getReviewsByProductId(id: string): Promise<ReviewsProductDTO> {
-    const data = await this.reviewsMongooseRepository.find(
+  async getReviewsByProductId(
+    id: number,
+    page: number
+  ): Promise<ReviewsProductDTO> {
+    const dataCount = await this.reviewsMongooseRepository.find(
       { productId: id },
-      {},
+      { commentId: 1 },
       { create_time: -1 },
       false
     );
 
+    const data = await this.reviewsMongooseRepository.findByProduct(id, page);
+
     return {
       pageSize: 10,
-      total: 24,
-      totalPages: 3,
-      currentPage: 1,
+      total: dataCount.length,
+      totalPages: Math.round(dataCount.length / 10),
+      currentPage: page,
       dataList: data.map((item: Review) => {
         const rp = new ReviewProduct();
         rp.additional_url = item.additional_url;

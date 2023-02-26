@@ -14,8 +14,11 @@ export class ReviewsController {
     return await this.loadService.loadReviews();
   }
 
-  @Get('/reviews/:id')
-  async getReviewsByProductId(@Param('id') id: string): Promise<any> {
-    return await this.getReviewsService.getReviewsByProductId(id);
+  @Get('/reviews/:id/:page')
+  async getReviewsByProductId(
+    @Param('id') id: number,
+    @Param('page') page: number
+  ): Promise<any> {
+    return await this.getReviewsService.getReviewsByProductId(id, page);
   }
 }
