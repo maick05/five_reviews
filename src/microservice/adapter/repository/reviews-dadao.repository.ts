@@ -7,6 +7,7 @@ import {
   DadaoResponse
 } from 'src/microservice/domain/responses/dadao.response';
 import { DadaoProduct } from 'src/microservice/domain/responses/search-dadao-product.response';
+import { DadaoSQA } from 'src/microservice/domain/responses/get-all-dadao-sqa.response';
 
 @Injectable()
 export class ReviewsDadaoRepository extends HttpClientService {
@@ -18,7 +19,6 @@ export class ReviewsDadaoRepository extends HttpClientService {
   }
 
   async getAllReviews(): Promise<DadaoListResponse<DadaoReview[]>> {
-    
     const result = await this.get(
       '/goods-comment/list?currentPage=1&pageSize=1000'
     );
@@ -33,6 +33,14 @@ export class ReviewsDadaoRepository extends HttpClientService {
     const result = await this.get(
       `/shopProduct/page?currentPage=1&pageSize=10&productName=${name}&goodsStatus=${status}`
     );
+    return result['data'];
+  }
+
+  async getAllSQA(): Promise<DadaoListResponse<DadaoSQA[]>> {
+    const result = await this.get(
+      '/shop-question-answer/list?currentPage=1&pageSize=1000'
+    );
+    console.log(result);
     return result['data'];
   }
 

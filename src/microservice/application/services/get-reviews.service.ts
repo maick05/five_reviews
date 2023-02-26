@@ -105,9 +105,6 @@ export class GetReviewsService {
 
     for await (const item of reviews) {
       const product = await this.getProductService.getProduct(item.productId);
-      console.log('product');
-      console.log(product);
-      console.log(item.productId);
 
       const feat = new FeaturedReview();
       feat.additional_url = item.additional_url;
