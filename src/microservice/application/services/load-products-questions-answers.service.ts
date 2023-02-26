@@ -13,19 +13,18 @@ export class LoadProductsQuestionsAnswersService {
 
   async loadPQA(): Promise<any> {
     const dadaoData = await this.reviewsDadaoRepository.getAllSQA();
-    await this.clear();
     await this.savePQAs(dadaoData.dataList);
     return dadaoData;
   }
 
-  async clear(): Promise<void> {
-    await this.mongooseRepository.removeAll();
-  }
-
   async savePQAs(dadaoData: DadaoSQA[]) {
     for await (const item of dadaoData) {
-      console.log('item');
-      console.log(item);
+      const pqaDB = await this.mongooseRepository.find({
+        questionId: item.questionId
+      });
+
+      if (pqaDB.length > 0) continue;
+
       const pqa = new ProductQuestionAnswer();
       pqa.questionId = item.questionId.toString();
       pqa.questionContent = item.questionContent;
