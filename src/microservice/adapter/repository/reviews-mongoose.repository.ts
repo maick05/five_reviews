@@ -48,4 +48,10 @@ export class ReviewsMongooseRepository extends MongooseRepository<
       { $sort: { count: -1 } }
     ]);
   }
+
+  async getFeaturedReviews(): Promise<Review[]>{
+    return this.find({
+      featured: true
+    });
+  }
 }

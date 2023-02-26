@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { FeaturedReview } from 'src/microservice/domain/dto/featured-reviews.dto';
 import { ReviewProduct } from 'src/microservice/domain/dto/reviews-product.dto';
 import {
   DadaoListResponse,
@@ -87,6 +88,43 @@ export class GetReviewsService {
           commentCount: total
         },
         starMap: starsArr
+      },
+      otherData: null
+    };
+  }
+
+  async getFeaturedReviews(): Promise<
+    DadaoResponse<DadaoListResponse<FeaturedReview[]>>
+  > {
+    const reviews = await this.reviewsMongooseRepository.find({
+      featured: true
+    });
+
+    return {
+      code: 200,
+      column: null,
+      msg: 'Successful operation',
+      data: {
+        pageSize: 10,
+        total: reviews.length,
+        totalPages: Math.round(reviews.length / 10),
+        currentPage: 1,
+        dataList: reviews.map((item: Review) => {
+          const feat = new FeaturedReview();
+          feat.additional_url = item.additional_url;
+          feat.area = item.area;
+          feat.avgStar = item.star;
+          feat.commentContent = item.content;
+          feat.commentId = item.commentId;
+          feat.commentTime = item.create_time;
+          feat.goodsHandle = item.handle;
+          feat.goodsId = item.productId;
+          feat.goodsImages = item.additional_url;
+          feat.goodsTitle = item.commentTitle;
+          feat.nick = item.nick;
+          return feat;
+        }),
+        otherData: null
       },
       otherData: null
     };

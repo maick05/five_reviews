@@ -1,5 +1,3 @@
-import { DadaoListResponse, DadaoResponse } from './dadao.response';
-
 export class DadaoReview {
   commentId: number;
   status: number;
