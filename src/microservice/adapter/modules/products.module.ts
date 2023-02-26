@@ -12,13 +12,18 @@ import {
 } from 'src/microservice/domain/schemas/product.schema';
 import { SaveProductService } from 'src/microservice/application/services/save-product.service';
 import { ProductsMongooseRepository } from '../repository/mongoose/products-mongoose.repository';
+import { GetProductService } from 'src/microservice/application/services/get-product.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Product.name, schema: ProductsSchema }])
   ],
   controllers: [],
-  providers: [SaveProductService, ProductsMongooseRepository],
-  exports: [SaveProductService, ProductsMongooseRepository]
+  providers: [
+    SaveProductService,
+    GetProductService,
+    ProductsMongooseRepository
+  ],
+  exports: [SaveProductService, GetProductService, ProductsMongooseRepository]
 })
 export class ProductsModule {}

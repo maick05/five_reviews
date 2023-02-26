@@ -8,11 +8,13 @@ import {
 import { GetDadaoStarsResponse } from 'src/microservice/domain/responses/get-dadao-stars.response';
 import { Review } from 'src/microservice/domain/schemas/review.schema';
 import { ReviewsMongooseRepository } from '../../adapter/repository/mongoose/reviews-mongoose.repository';
+import { GetProductService } from './get-product.service';
 
 @Injectable()
 export class GetReviewsService {
   constructor(
-    private readonly reviewsMongooseRepository: ReviewsMongooseRepository
+    private readonly reviewsMongooseRepository: ReviewsMongooseRepository,
+    private readonly getProductService: GetProductService
   ) {}
 
   async getReviewsByProductId(
@@ -77,7 +79,6 @@ export class GetReviewsService {
       totalStars += item.count * item._id;
     });
 
-
     return {
       code: 200,
       column: null,
@@ -100,6 +101,29 @@ export class GetReviewsService {
       featured: true
     });
 
+    const arrDadao = [];
+
+    for await (const item of reviews) {
+      const product = await this.getProductService.getProduct(item.productId);
+      console.log('product');
+      console.log(product);
+      console.log(item.productId);
+
+      const feat = new FeaturedReview();
+      feat.additional_url = item.additional_url;
+      feat.area = item.area;
+      feat.avgStar = item.star;
+      feat.commentContent = item.content;
+      feat.commentId = item.commentId;
+      feat.commentTime = item.create_time;
+      feat.goodsHandle = product.handle;
+      feat.goodsId = item.productId;
+      feat.goodsImages = product.images;
+      feat.goodsTitle = product.title;
+      feat.nick = item.nick;
+      arrDadao.push(feat);
+    }
+
     return {
       code: 200,
       column: null,
@@ -109,21 +133,7 @@ export class GetReviewsService {
         total: reviews.length,
         totalPages: Math.round(reviews.length / 10),
         currentPage: 1,
-        dataList: reviews.map((item: Review) => {
-          const feat = new FeaturedReview();
-          feat.additional_url = item.additional_url;
-          feat.area = item.area;
-          feat.avgStar = item.star;
-          feat.commentContent = item.content;
-          feat.commentId = item.commentId;
-          feat.commentTime = item.create_time;
-          feat.goodsHandle = item.handle;
-          feat.goodsId = item.productId;
-          feat.goodsImages = item.additional_url;
-          feat.goodsTitle = item.commentTitle;
-          feat.nick = item.nick;
-          return feat;
-        }),
+        dataList: arrDadao,
         otherData: null
       },
       otherData: null
