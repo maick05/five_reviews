@@ -59,7 +59,7 @@ export class GetStarsService {
 
     const data = {};
     data[productId] = {
-      avg_stars: totalStars / total,
+      average_star: totalStars / total,
       total: total
     };
 
@@ -92,7 +92,7 @@ export class GetStarsService {
 
       const data = {};
       data[id] = {
-        avg_stars: totalStars / total,
+        average_star: totalStars / total,
         total: total
       };
 
