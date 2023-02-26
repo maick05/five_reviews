@@ -75,7 +75,7 @@ export class GetReviewsService {
       const product = await this.getProductService.getProduct(item.productId);
 
       const feat = new FeaturedReview();
-      feat.additional_url = item.additional_url;
+      feat.additionalUrl = item.additional_url;
       feat.area = item.area;
       feat.avgStar = item.star;
       feat.commentContent = item.content;
