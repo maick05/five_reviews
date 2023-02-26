@@ -8,6 +8,7 @@ import { ReviewsMongooseRepository } from './adapter/repository/reviews-mongoose
 import { ReviewsDadaoRepository } from './adapter/repository/reviews-dadao.repository';
 import { Review, ReviewsSchema } from './domain/schemas/review.schema';
 import { HttpModule } from '@nestjs/axios';
+import { GetReviewsService } from './application/services/get-reviews.service';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { HttpModule } from '@nestjs/axios';
   controllers: [ReviewsController],
   providers: [
     LoadReviewsService,
+    GetReviewsService,
     ReviewsMongooseRepository,
     ReviewsDadaoRepository
   ]
