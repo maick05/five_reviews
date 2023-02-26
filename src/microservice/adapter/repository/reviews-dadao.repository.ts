@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HttpClientService } from '../outputs/client/http-client.service';
 import { HttpService } from '@nestjs/axios';
 import { GetAllDadaoReviewsResponse } from '../../../../src/microservice/domain/responses/get-all-dadao-reviews.response';
+import { SearchDadaoProduct } from '../../domain/responses/search-dadao-product.response';
 
 @Injectable()
 export class ReviewsDadaoRepository extends HttpClientService {
@@ -16,10 +17,19 @@ export class ReviewsDadaoRepository extends HttpClientService {
     const result = await this.get(
       '/goods-comment/list?currentPage=1&pageSize=1000'
     );
-    console.log(result);
-    console.log(result['data']);
     return result['data'];
   }
+
+  async searchProductByName(
+    name: string,
+    status: string
+  ): Promise<SearchDadaoProduct> {
+    const result = await this.get(
+      `/shopProduct/page?currentPage=1&pageSize=10&productName=${name}&goodsStatus=${status}`
+    );
+    return result['data'];
+  }
+
 
   protected getHeaders() {
     return {

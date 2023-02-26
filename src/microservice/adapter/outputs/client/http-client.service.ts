@@ -29,9 +29,6 @@ export abstract class HttpClientService extends AbstractService {
   async get(endpoint: string): Promise<any> {
     try {
       console.log(`${this.url}${endpoint}`);
-      console.log({
-        headers: this.getHeaders()
-      });
       const response = await firstValueFrom(
         await this.httpService.get(`${this.url}${endpoint}`, {
           headers: this.getHeaders()

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewsDadaoRepository } from '../../adapter/repository/reviews-dadao.repository';
-import {
-  DadaoReview,
-  GetAllDadaoReviewsResponse
-} from '../../../../src/microservice/domain/responses/get-all-dadao-reviews.response';
+import { DadaoReview } from '../../../../src/microservice/domain/responses/get-all-dadao-reviews.response';
 import { ReviewsMongooseRepository } from '../../adapter/repository/reviews-mongoose.repository';
 import { Review } from '../../domain/schemas/review.schema';
+import {
+  DadaoProduct,
+  SearchDadaoProduct
+} from '../../domain/responses/search-dadao-product.response';
 
 @Injectable()
 export class LoadReviewsService {
@@ -18,7 +19,6 @@ export class LoadReviewsService {
     const dadaoData = await this.reviewsDadaoRepository.getAllReviews();
     await this.clearReviews();
     await this.saveReviews(dadaoData.dataList);
-    console.log(dadaoData);
     return dadaoData;
   }
 
@@ -28,6 +28,8 @@ export class LoadReviewsService {
 
   async saveReviews(dadaoData: DadaoReview[]) {
     for await (const item of dadaoData) {
+      const product = await this.searchProduct(item.goods_title);
+
       const rev = new Review();
       rev.active = true;
       rev.additional_url = item.additional_url;
@@ -44,9 +46,41 @@ export class LoadReviewsService {
       rev.replay_content = item.replay_content;
       rev.star = item.star;
       rev.status = item.status;
-      await console.log("rev.commentId");
+      rev.productId = product.goodsId;
+      await console.log('rev.commentId');
       await console.log(rev.commentId);
-      await this.reviewsMongooseRepository.insertOne(rev, 'Review');
+      await this.reviewsMongooseRepository.insertOne(rev, rev.goods_title);
     }
+  }
+
+  async searchProduct(name: string): Promise<DadaoProduct> {
+    let product = await this.reviewsDadaoRepository.searchProductByName(
+      name,
+      'active'
+    );
+
+    if (product.dataList.length > 1) {
+      console.log(
+        product.dataList.map((item) => {
+          item.goodsId, item.goodsTitle;
+        })
+      );
+      throw new Error('Encontrado dois produtos para o mesmo nome!');
+    }
+
+    console.log('name ---> ' + name);
+
+    if (product.dataList.length == 0) {
+      console.log('Nenhum produto ativo encontrado com esse nome ---> ' + name);
+      product = await this.reviewsDadaoRepository.searchProductByName(
+        name,
+        'draft'
+      );
+
+      if (product.dataList.length == 0)
+        throw new Error('Nenhum produto encontrado com esse nome em rascunho');
+    }
+
+    return product.dataList[0];
   }
 }
