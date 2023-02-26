@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { LoadProductsQuestionsAnswersService } from 'src/microservice/application/services/load-products-questions-answers.service';
-import { GetReviewsService } from '../../application/services/get-reviews.service';
 import { LoadReviewsService } from '../../application/services/load-reviews.service';
 
 @Controller()
