@@ -3,7 +3,7 @@ export class FeaturedReview {
   commentContent: string;
   commentTime: number;
   nick: string;
-  additional_url: string;
+  additionalUrl: string;
   area: string;
   goodsTitle: string;
   goodsImages: string;
