@@ -47,7 +47,6 @@ export class ReviewsDadaoRepository extends HttpClientService {
     const result = await this.get(
       '/shop-question-answer/list?currentPage=1&pageSize=1000'
     );
-    console.log(result);
     return result['data'];
   }
 

@@ -7,7 +7,7 @@ import { ReviewsMongooseRepository } from '../../adapter/repository/mongoose/rev
 @Injectable()
 export class GetStarsService {
   constructor(
-    private readonly reviewsMongooseRepository: ReviewsMongooseRepository,
+    private readonly reviewsMongooseRepository: ReviewsMongooseRepository
   ) {}
 
   async getStars(
@@ -68,6 +68,42 @@ export class GetStarsService {
       column: null,
       msg: 'success',
       data: data,
+      otherData: null
+    };
+  }
+
+  async getOverviewByProductIds(ids: {
+    goodsIds: string;
+  }): Promise<DadaoResponse<ProductOverviewData[]>> {
+    const arrData = [];
+
+    for await (const id of ids.goodsIds.split(',')) {
+      let total = 0;
+      let totalStars = 0;
+
+      const aggStars = await this.reviewsMongooseRepository.getStarReviews(
+        Number(id)
+      );
+
+      aggStars.forEach((item) => {
+        total += item.count;
+        totalStars += item.count * item._id;
+      });
+
+      const data = {};
+      data[id] = {
+        avg_stars: totalStars / total,
+        total: total
+      };
+
+      arrData.push(data);
+    }
+
+    return {
+      code: 200,
+      column: null,
+      msg: 'success',
+      data: arrData,
       otherData: null
     };
   }
