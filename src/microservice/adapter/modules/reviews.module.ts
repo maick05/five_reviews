@@ -5,6 +5,7 @@ import { ReviewsMongooseRepository } from '../repository/mongoose/reviews-mongoo
 import { Review, ReviewsSchema } from '../../domain/schemas/review.schema';
 import { GetReviewsService } from '../../application/services/get-reviews.service';
 import { ProductsModule } from './products.module';
+import { GetStarsService } from 'src/microservice/application/services/get-stars.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { ProductsModule } from './products.module';
     ProductsModule
   ],
   controllers: [ReviewsController],
-  providers: [GetReviewsService, ReviewsMongooseRepository],
-  exports: [GetReviewsService, ReviewsMongooseRepository]
+  providers: [GetReviewsService, GetStarsService, ReviewsMongooseRepository],
+  exports: [GetReviewsService, GetStarsService, ReviewsMongooseRepository]
 })
 export class ReviewsModule {}

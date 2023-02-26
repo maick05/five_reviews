@@ -62,38 +62,6 @@ export class GetReviewsService {
     };
   }
 
-  async getStars(
-    productId: number
-  ): Promise<DadaoResponse<GetDadaoStarsResponse>> {
-    const aggStars = await this.reviewsMongooseRepository.getStarReviews(
-      productId
-    );
-
-    const starsArr = { '5': 0, '4': 0, '3': 0, '2': 0, '1': 0 };
-    let total = 0;
-    let totalStars = 0;
-
-    aggStars.forEach((item) => {
-      starsArr[item._id] = item.count;
-      total += item.count;
-      totalStars += item.count * item._id;
-    });
-
-    return {
-      code: 200,
-      column: null,
-      msg: 'Successful operation',
-      data: {
-        countAndAvgMap: {
-          avgStar: (totalStars / total).toFixed(2).toString(),
-          commentCount: total
-        },
-        starMap: starsArr
-      },
-      otherData: null
-    };
-  }
-
   async getFeaturedReviews(): Promise<
     DadaoResponse<DadaoListResponse<FeaturedReview[]>>
   > {
