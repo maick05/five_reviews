@@ -3,10 +3,7 @@ import { ReviewsDadaoRepository } from '../../adapter/repository/reviews-dadao.r
 import { DadaoReview } from '../../../../src/microservice/domain/responses/get-all-dadao-reviews.response';
 import { ReviewsMongooseRepository } from '../../adapter/repository/reviews-mongoose.repository';
 import { Review } from '../../domain/schemas/review.schema';
-import {
-  DadaoProduct,
-  SearchDadaoProduct
-} from '../../domain/responses/search-dadao-product.response';
+import { DadaoProduct } from '../../domain/responses/search-dadao-product.response';
 
 @Injectable()
 export class LoadReviewsService {
@@ -55,6 +52,7 @@ export class LoadReviewsService {
       rev.star = item.star;
       rev.status = item.status;
       rev.productId = product.goodsId;
+      rev.handle = product.handle;
       await console.log('rev.commentId');
       await console.log(rev.commentId);
       await this.reviewsMongooseRepository.insertOne(rev, rev.goods_title);

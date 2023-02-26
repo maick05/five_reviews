@@ -25,7 +25,7 @@ export class ReviewsMongooseRepository extends MongooseRepository<
     return result;
   }
 
-  async removeAll(){
+  async removeAll() {
     await this.model.deleteMany({});
   }
 
@@ -37,5 +37,15 @@ export class ReviewsMongooseRepository extends MongooseRepository<
       .limit(page * 10)
       .lean()
       .exec();
+  }
+
+  async getStarReviews(
+    productId: number
+  ): Promise<{ _id: number; count: number }[]> {
+    return this.model.aggregate([
+      { $match: { productId: Number(productId) } },
+      { $group: { _id: '$star', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
   }
 }

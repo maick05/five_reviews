@@ -1,4 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { ReviewProduct } from 'src/microservice/domain/dto/reviews-product.dto';
+import { DadaoListResponse, DadaoResponse } from 'src/microservice/domain/responses/dadao.response';
 import { GetReviewsService } from '../../application/services/get-reviews.service';
 import { LoadReviewsService } from '../../application/services/load-reviews.service';
 
@@ -18,7 +20,15 @@ export class ReviewsController {
   async getReviewsByProductId(
     @Param('id') id: number,
     @Param('page') page: number
-  ): Promise<any> {
+  ): Promise<DadaoResponse<DadaoListResponse<ReviewProduct[]>>> {
     return await this.getReviewsService.getReviewsByProductId(id, page);
+  }
+
+  @Get('/stars/:id/')
+  async getStarsByProductId(
+    @Param('id') id: number,
+    @Param('page') page: number
+  ): Promise<any> {
+    return await this.getReviewsService.getStars(id);
   }
 }

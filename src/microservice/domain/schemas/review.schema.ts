@@ -53,6 +53,9 @@ export class Review {
 
   @Prop({ required: true })
   productId: number;
+
+  @Prop({ required: true })
+  handle: string;
 }
 
 const schema = SchemaFactory.createForClass(Review);

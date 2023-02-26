@@ -1,12 +1,3 @@
-export class ReviewsProductDTO {
-  public pageSize: number;
-  public total: number;
-  public totalPages: number;
-  public currentPage: number;
-  public dataList: ReviewProduct[];
-  public otherData: any;
-}
-
 export class ReviewProduct {
   id: number;
   customer_id: string;

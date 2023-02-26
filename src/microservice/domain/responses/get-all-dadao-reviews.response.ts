@@ -1,11 +1,4 @@
-export class GetAllDadaoReviewsResponse {
-  public pageSize: number;
-  public total: number;
-  public totalPages: number;
-  public currentPage: number;
-  public dataList: DadaoReview[];
-  public otherData: any;
-}
+import { DadaoListResponse, DadaoResponse } from './dadao.response';
 
 export class DadaoReview {
   commentId: number;
