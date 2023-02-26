@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewsDadaoRepository } from '../../adapter/repository/reviews-dadao.repository';
 import { DadaoReview } from '../../../../src/microservice/domain/responses/get-all-dadao-reviews.response';
-import { ReviewsMongooseRepository } from '../../adapter/repository/reviews-mongoose.repository';
+import { ReviewsMongooseRepository } from '../../adapter/repository/mongoose/reviews-mongoose.repository';
 import { Review } from '../../domain/schemas/review.schema';
 import { DadaoProduct } from '../../domain/responses/search-dadao-product.response';
+import { SaveProductService } from './save-product.service';
+import { Product } from 'src/microservice/domain/schemas/product.schema';
 
 @Injectable()
 export class LoadReviewsService {
   constructor(
     private readonly reviewsDadaoRepository: ReviewsDadaoRepository,
-    private readonly reviewsMongooseRepository: ReviewsMongooseRepository
+    private readonly reviewsMongooseRepository: ReviewsMongooseRepository,
+    private readonly saveProductService: SaveProductService
   ) {}
 
   async loadReviews(): Promise<any> {
@@ -24,6 +27,7 @@ export class LoadReviewsService {
   }
 
   async saveReviews(dadaoData: DadaoReview[]) {
+    const arrProducts = [];
     for await (const item of dadaoData) {
       const reviewInDB = await this.reviewsMongooseRepository.find({
         commentId: item.commentId
@@ -33,7 +37,22 @@ export class LoadReviewsService {
         continue;
       }
 
-      const product = await this.searchProduct(item.goods_title);
+      const productsDB = arrProducts.filter(
+        (prd: Product) =>
+          prd.title === item.goods_title && prd.status == 'active'
+      );
+
+      console.log('productsDB.length --> ' + productsDB.length);
+
+      let productDB = new Product();
+
+      if (productsDB.length === 0) {
+        const product = await this.searchProduct(item.goods_title);
+        productDB = await this.saveProductService.saveProduct(product);
+        arrProducts.push(productDB);
+      } else {
+        productDB = productsDB[0];
+      }
 
       const rev = new Review();
       rev.active = true;
@@ -51,9 +70,7 @@ export class LoadReviewsService {
       rev.replay_content = item.replay_content;
       rev.star = item.star;
       rev.status = item.status;
-      rev.productId = product.goodsId;
-      rev.handle = product.handle;
-      await console.log('rev.commentId');
+      rev.productId = productDB.id;
       await console.log(rev.commentId);
       await this.reviewsMongooseRepository.insertOne(rev, rev.goods_title);
     }

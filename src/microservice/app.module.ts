@@ -4,13 +4,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import configuration from '../config/configuration';
-import { ReviewsMongooseRepository } from './adapter/repository/reviews-mongoose.repository';
+import { ReviewsMongooseRepository } from './adapter/repository/mongoose/reviews-mongoose.repository';
 import { ReviewsDadaoRepository } from './adapter/repository/reviews-dadao.repository';
 import { Review, ReviewsSchema } from './domain/schemas/review.schema';
 import { HttpModule } from '@nestjs/axios';
 import { GetReviewsService } from './application/services/get-reviews.service';
 import { ReviewsModule } from './adapter/modules/reviews.module';
 import { LoaderModule } from './adapter/modules/loader.module';
+import { ProductsModule } from './adapter/modules/products.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { LoaderModule } from './adapter/modules/loader.module';
       load: [configuration]
     }),
     ReviewsModule,
-    LoaderModule,
+    LoaderModule
   ],
   controllers: [],
   providers: []

@@ -7,7 +7,7 @@ import {
 } from 'src/microservice/domain/responses/dadao.response';
 import { GetDadaoStarsResponse } from 'src/microservice/domain/responses/get-dadao-stars.response';
 import { Review } from 'src/microservice/domain/schemas/review.schema';
-import { ReviewsMongooseRepository } from '../../adapter/repository/reviews-mongoose.repository';
+import { ReviewsMongooseRepository } from '../../adapter/repository/mongoose/reviews-mongoose.repository';
 
 @Injectable()
 export class GetReviewsService {

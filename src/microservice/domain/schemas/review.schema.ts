@@ -54,7 +54,7 @@ export class Review {
   @Prop({ required: true })
   productId: number;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   handle: string;
 }
 

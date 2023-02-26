@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { MongooseRepository } from '@devseeder/nestjs-microservices-commons';
-import { Review, ReviewDocument } from '../../domain/schemas/review.schema';
+import { Review, ReviewDocument } from '../../../domain/schemas/review.schema';
 
 @Injectable()
 export class ReviewsMongooseRepository extends MongooseRepository<
