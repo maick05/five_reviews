@@ -22,4 +22,14 @@ export class ProductsQuestionsAnswersMongooseRepository extends MongooseReposito
   async removeAll() {
     await this.model.deleteMany({});
   }
+
+  async findByProduct(productId: number, page: number) {
+    return this.model
+      .find({ productId })
+      .sort({ create_time: -1 })
+      .skip((page - 1) * 10)
+      .limit(page * 10)
+      .lean()
+      .exec();
+  }
 }

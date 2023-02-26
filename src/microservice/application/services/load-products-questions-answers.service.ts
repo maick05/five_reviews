@@ -27,7 +27,7 @@ export class LoadProductsQuestionsAnswersService {
       console.log('item');
       console.log(item);
       const pqa = new ProductQuestionAnswer();
-      pqa.questionId = item.questionId;
+      pqa.questionId = item.questionId.toString();
       pqa.questionContent = item.questionContent;
       pqa.questionTime = item.questionTime;
       pqa.productId = item.productId;

@@ -1,5 +1,5 @@
 export class ReviewProduct {
-  id: number;
+  id: string;
   customer_id: string;
   nick: string;
   comment_title: string;

@@ -58,7 +58,7 @@ export class LoadReviewsService {
       rev.active = true;
       rev.additional_url = item.additional_url;
       rev.area = item.area;
-      rev.commentId = item.commentId;
+      rev.commentId = item.commentId.toString();
       rev.commentTitle = item.commentTitle;
       rev.content = item.content;
       rev.create_time = item.create_time;

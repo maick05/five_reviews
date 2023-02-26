@@ -5,7 +5,7 @@ export type ProductQuestionAnswerDocument = ProductQuestionAnswer & Document;
 @Schema({ timestamps: true, collection: 'pqa' })
 export class ProductQuestionAnswer {
   @Prop({ required: true })
-  questionId: number;
+  questionId: string;
 
   @Prop({ required: true })
   questionContent: string;

@@ -7,7 +7,7 @@ export type ReviewDocument = Review & Document;
 @Schema({ timestamps: true, collection: 'reviews' })
 export class Review {
   @Prop({ required: true })
-  commentId: number;
+  commentId: string;
 
   @Prop({ required: true })
   status: number;

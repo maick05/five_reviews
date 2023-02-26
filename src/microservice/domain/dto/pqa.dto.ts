@@ -1,15 +1,13 @@
-export class DadaoSQA {
+export class PQAObjectDTO {
   questionId: string;
   questionContent: string;
   questionTime: number;
-  productId: number;
-  productTitle: string;
-  isFeature: boolean;
-  questionStatus: boolean;
   questionSource: number;
   questionCustomerName: string;
   questionCustomerEmail: string;
-  answerId: number;
   answerContent: string;
   answerTime: number;
+  likeCount: number;
+  dislikeCount: number;
+  likeStatus: number;
 }
