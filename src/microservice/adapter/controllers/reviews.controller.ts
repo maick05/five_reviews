@@ -5,19 +5,10 @@ import {
   DadaoResponse
 } from 'src/microservice/domain/responses/dadao.response';
 import { GetReviewsService } from '../../application/services/get-reviews.service';
-import { LoadReviewsService } from '../../application/services/load-reviews.service';
 
 @Controller()
 export class ReviewsController {
-  constructor(
-    private readonly loadService: LoadReviewsService,
-    private readonly getReviewsService: GetReviewsService
-  ) {}
-
-  @Get('/load')
-  async loadReviews(): Promise<any> {
-    return await this.loadService.loadReviews();
-  }
+  constructor(private readonly getReviewsService: GetReviewsService) {}
 
   @Get('/reviews/:id/:page')
   async getReviewsByProductId(

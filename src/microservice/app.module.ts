@@ -9,6 +9,8 @@ import { ReviewsDadaoRepository } from './adapter/repository/reviews-dadao.repos
 import { Review, ReviewsSchema } from './domain/schemas/review.schema';
 import { HttpModule } from '@nestjs/axios';
 import { GetReviewsService } from './application/services/get-reviews.service';
+import { ReviewsModule } from './adapter/modules/reviews.module';
+import { LoaderModule } from './adapter/modules/loader.module';
 
 @Module({
   imports: [
@@ -23,15 +25,10 @@ import { GetReviewsService } from './application/services/get-reviews.service';
       isGlobal: true,
       load: [configuration]
     }),
-    MongooseModule.forFeature([{ name: Review.name, schema: ReviewsSchema }]),
-    HttpModule
+    ReviewsModule,
+    LoaderModule,
   ],
-  controllers: [ReviewsController],
-  providers: [
-    LoadReviewsService,
-    GetReviewsService,
-    ReviewsMongooseRepository,
-    ReviewsDadaoRepository
-  ]
+  controllers: [],
+  providers: []
 })
 export class AppModule {}
