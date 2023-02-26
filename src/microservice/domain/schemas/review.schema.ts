@@ -56,6 +56,15 @@ export class Review {
 
   @Prop({ required: false })
   handle: string;
+
+  @Prop({ required: false, default: 0 })
+  likeCount: number;
+
+  @Prop({ required: false, default: 0 })
+  dislikeCount: number;
+
+  @Prop({ required: false, default: true })
+  dislikeStatus: boolean;
 }
 
 const schema = SchemaFactory.createForClass(Review);

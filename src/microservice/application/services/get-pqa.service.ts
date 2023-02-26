@@ -45,6 +45,9 @@ export class GetPQAService {
           sqa.questionCustomerEmail = item.questionCustomerEmail;
           sqa.answerContent = item.answerContent;
           sqa.answerTime = item.answerTime;
+          sqa.likeCount = item.likeCount;
+          sqa.dislikeCount = item.dislikeCount;
+          sqa.likeStatus = item.dislikeStatus ? 1 : 0;
           return sqa;
         }),
         otherData: null

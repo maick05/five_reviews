@@ -48,9 +48,9 @@ export class GetReviewsService {
           rp.comment_title = item.commentTitle;
           rp.create_time = item.create_time;
           rp.customer_id = '';
-          rp.dislikeCount = 0;
+          rp.dislikeCount = item.dislikeCount;
           rp.id = item.commentId;
-          rp.likeCount = 0;
+          rp.likeCount = item.likeCount;
           rp.likeValue = 0;
           rp.nick = item.nick;
           rp.replay_content = item.replay_content;
